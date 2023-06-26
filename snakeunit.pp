@@ -99,6 +99,10 @@ begin
 			if tmp^.CurX < 1 then
 				tmp^.CurX := ScreenWidth;
 			tmp^.CurY := tmp^.CurY + tmp^.dy;
+			if tmp^.CurY > ScreenHeight then
+				tmp^.CurY := 1;
+			if tmp^.CurY < 1 then
+				tmp^.CurY := ScreenHeight;
 			DrawStar(tmp);
 			tmp := tmp^.prev;
 		end;

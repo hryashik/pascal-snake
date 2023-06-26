@@ -4,10 +4,12 @@ interface
 uses crt;
 
 type 	
+	directionsType = (left, right, up, down);
 	itemptr = ^item;
 	item = record
 		head: boolean; 
 		CurX, CurY, dx, dy: integer;
+		CurDir: directionsType;
 		next: itemptr;
 		prev: itemptr;
 	end;
@@ -20,7 +22,7 @@ procedure InitSnake();
 procedure AddItem();
 procedure DrawStar(var s: itemptr);
 procedure HideStar(var s: itemptr);
-procedure SetDirection(var s: itemptr; x, y: integer);
+procedure SetDirection(direction: directionsType);
 procedure MoveSnake(var l: itemptr);
 function CheckMove(x, y: integer): boolean;
 
@@ -33,6 +35,7 @@ begin
 	first^.CurY := ScreenHeight div 2;
 	first^.dx := -1;
 	first^.dy := 0;
+	first^.CurDir := left;
 	first^.prev := nil;
 	first^.next := nil;
 	first^.head := true;
@@ -69,10 +72,40 @@ begin
 	GotoXY(1, 1);
 end;
 
-procedure SetDirection(var s: itemptr; x, y: integer);
+procedure SetDirection(direction: directionsType);
 begin
-	s^.dx := x;
-	s^.dy := y;
+	if direction = left then
+	begin
+		if first^.CurDir = right then
+			exit;
+		first^.dx := -1;
+		first^.dy := 0;
+		first^.CurDir := left;
+	end;
+	if direction = right then
+	begin
+		if first^.CurDir = left then
+			exit;
+		first^.dx := 1;
+		first^.dy := 0;
+		first^.CurDir := right
+	end;
+	if direction = up then
+	begin
+		if first^.CurDir = down then
+			exit;
+		first^.dx := 0;
+		first^.dy := 1;
+		first^.CurDir := up;
+	end;
+	if direction = down then
+	begin
+		if first^.CurDir = up then
+			exit;
+		first^.dx := 0;
+		first^.dy := -1;
+		first^.CurDir := down;
+	end;
 end;
 
 procedure MoveSnake(var l: itemptr);

@@ -21,8 +21,8 @@ begin
 	randomize;
 	MaxTableX := ScreenWidth;
 	MaxTableY := ScreenHeight;
-	x := random(MaxTableX - 1) + 2;
-	y := random(MaxTableY - 1) + 2;
+	x := random(MaxTableX - 2) + 2;
+	y := random(MaxTableY - 2) + 2;
 	apple.CurX := x;
 	apple.CurY := y;
 	GotoXY(x, y);
@@ -81,10 +81,10 @@ begin
 		end;
 		GetKey(key);
 		case key of
-			-75: SetDirection(first, -1, 0);
-			-77: SetDirection(first, 1, 0);
-			-72: SetDirection(first, 0, -1);
-			-80: SetDirection(first, 0, 1);
+			-75: SetDirection(left);
+			-77: SetDirection(right);
+			-72: SetDirection(down);
+			-80: SetDirection(up);
 			27: break
 		end
 	end;

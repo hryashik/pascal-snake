@@ -36,6 +36,27 @@ var
 	key: integer;
 	score: integer = 0;
 	apple: food;
+	FailedMessage: string = 'Game is over, your score: ';
+
+procedure ShowEnd();
+var c: integer;
+begin	
+	clrscr();
+	GotoXY(ScreenWidth div 2 - length(FailedMessage) div 2, ScreenHeight div 2);
+	TextColor(Red);
+	writeln(Failedmessage, score);
+	TextColor(White);
+	GotoXY(ScreenWidth div 2 - length(FailedMessage) div 2, ScreenHeight div 2 + 4);
+	write('Press ESC button to end');
+	while true do
+	begin;
+		GetKey(c);
+		if c = 27 then
+			break;
+	end;
+	clrscr();
+end;
+
 begin
 	clrscr();
 	ShowScore(score);
@@ -43,9 +64,11 @@ begin
 	InitSnake();
 	while true do
 	begin
-		if not KeyPressed then
+		if not KeyPressed then { moving }
 			begin
 			MoveSnake(last);
+			if StatusSnake = false then { eat yourself }
+				break;
 			if (first^.CurX = apple.CurX) and (first^.CurY = apple.CurY) then
 			begin
 				AddItem();
@@ -65,5 +88,5 @@ begin
 			27: break
 		end
 	end;
-	clrscr();
+	ShowEnd();
 end.

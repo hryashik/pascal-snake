@@ -13,7 +13,8 @@ type
 	end;
 
 var
-	first, last, tmp: itemptr;
+	first, last, tmp, cursor: itemptr;
+	StatusSnake: boolean = true;
 
 procedure InitSnake();
 procedure AddItem();
@@ -21,6 +22,7 @@ procedure DrawStar(var s: itemptr);
 procedure HideStar(var s: itemptr);
 procedure SetDirection(var s: itemptr; x, y: integer);
 procedure MoveSnake(var l: itemptr);
+function CheckMove(x, y: integer): boolean;
 
 implementation
 
@@ -103,11 +105,36 @@ begin
 				tmp^.CurY := 1;
 			if tmp^.CurY < 1 then
 				tmp^.CurY := ScreenHeight;
-			DrawStar(tmp);
-			tmp := tmp^.prev;
+			if CheckMove(tmp^.CurX, tmp^.CurY) = true then
+			begin
+				DrawStar(tmp);
+				tmp := tmp^.prev;
+			end
+			else
+			begin	
+				StatusSnake := false;
+				DrawStar(tmp);
+				tmp := tmp^.prev;
+			end;
 		end;
 	end;	
 end;
 
+function CheckMove(x, y: integer): boolean;
+var result: boolean;
+begin
+	result := true;
+	cursor := last;
+	while cursor^.head = false do
+	begin
+		if (cursor^.CurX = x) and (cursor^.CurY = y) then
+		begin
+			result := false;
+			break;
+		end;
+		cursor := cursor^.prev;
+	end;
+	CheckMove := result;
+end;
 end.
 
